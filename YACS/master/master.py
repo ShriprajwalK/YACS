@@ -1,5 +1,6 @@
 import threading
 import socket
+import sys
 import logging
 import json
 import time
@@ -18,14 +19,21 @@ lock = threading.Lock()
 class Scheduler():
     def __init__(self, config):
         self.config = config
+        self.number_of_workers = len(config)
+
         self.map_tasks_lock = threading.Lock()
         self.reduce_tasks_lock = threading.Lock()
-        self.slots = {1: 5}
+        self.slots_lock = threading.Lock()
+        self.slots = {}
         self.map_tasks = {}
         self.reduce_tasks ={}
         self.ready_queue = Queue()
         self.running_queue = Queue()
 
+        for i in config:
+            self.slots[i['worker_id']] = {'port': i['port'], 'slots': i['slots']}
+
+        print(self.slots)
         t1 = threading.Thread(target=self.listen_for_jobs)
         t2 = threading.Thread(target=self.listen_for_worker_updates)
         t3 = threading.Thread(target=self.schedule)
@@ -60,14 +68,15 @@ class Scheduler():
         print('allocating')
         if not self.ready_queue.empty():
             print('not empty')
-            for i in self.slots:
-                if self.slots[i] != 0:
-                    self.slots[i] -= 1
-                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                        s.connect(('localhost', 4001))
-                        #print(f"SENDING WORKER the job {msg}")
-                        s.sendall(bytes(str(self.ready_queue.get()), 'utf-8'))
+            with self.slots_lock:
+                for i in self.slots:
+                    if self.slots[i]['slots'] != 0:
+                        self.slots[i]['slots'] -= 1
+                        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                            s.connect(('localhost', 4001))
+                            #print(f"SENDING WORKER the job {msg}")
+                            s.sendall(bytes(str(self.ready_queue.get()), 'utf-8'))
 
 
     def schedule(self):
@@ -124,7 +133,10 @@ class Scheduler():
 
 
 def main():
-    sched = Scheduler("some_config")
+    with open(sys.argv[1]) as f:
+        config = json.load(f)
+    print(config['workers'])
+    sched = Scheduler(config['workers'])
 
 if __name__ == "__main__":
     main()
