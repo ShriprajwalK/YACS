@@ -54,68 +54,85 @@ class Scheduler():
             for i in job['map_tasks']:
                 i['status'] = 0
             self.map_tasks[job['job_id']] = job['map_tasks']
-        #print("given up lock 1")
+        print("given up lock 1")
         with self.reduce_tasks_lock:
             for i in job['reduce_tasks']:
                 i['status'] = 0
             self.reduce_tasks[job['job_id']] = job['reduce_tasks']
-        #print("given up lock 2")
-        #print('tasks right now:')
-        #print(map_tasks)
-        #print(reduce_tasks)
-
-    def allocate_tasks(self):
-        print('allocating')
-        if not self.ready_queue.empty():
-            print('not empty')
-            with self.slots_lock:
-                for i in self.slots:
-                    if self.slots[i]['slots'] != 0:
-                        self.slots[i]['slots'] -= 1
-                        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                            s.connect(('localhost', 4001))
-                            #print(f"SENDING WORKER the job {msg}")
-                            s.sendall(bytes(str(self.ready_queue.get()), 'utf-8'))
-
-
-    def schedule(self):
-        print("scheduling")
-        while True:
-            reducers_to_be_run = []
-            time.sleep(2)
-            with self.map_tasks_lock:
-                for i in self.map_tasks:
-                    print()
-                    print("NYAHAHAHAHAHHAHAHAHAHAHAHAH")
-                    print(i)
-                    for map_task in self.map_tasks[i]:
-                        print('map task', map_task)
-                        if map_task['status'] == 0:
-                            map_task['status'] = 1
-                            self.ready_queue.put(map_task)
-                            break
-                print(self.map_tasks)
-            print(f'ready_queue {self.ready_queue.queue}')
-            with self.reduce_tasks_lock:
-                pass
-                #print(self.reduce_tasks)
-            self.allocate_tasks()
-
 
 
     def listen_for_jobs(self):
-        print('listeing')
+        print('listening')
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(('localhost', 5000))
             s.listen(5)
             while True:
+                print('listening for request')
                 request_socket, address = s.accept()
-                #print(f"Connection from {address} to 5000(requests) has been established.")
+                print(f"Connection from {address} to 5000(requests) has been established.")
                 msg = request_socket.recv(1024).decode("utf-8")
-                #print(f"MASTER RECEIVED JOB:{msg}")
+                print(f"MASTER RECEIVED JOB:{msg}")
                 self.parse_request(msg)
+
+
+
+    def allocate_tasks(self):
+        print('allocating')
+        print('not empty', self.ready_queue.queue)
+        for i in self.slots:
+            if not self.ready_queue.empty():
+                    if self.slots[i]['slots'] != 0:
+                        #self.slots[i]['slots'] -= 1
+                        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                            print('using sockets')
+                            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                            s.connect(('localhost', 4001))
+                            #print(f"SENDING WORKER the job {msg}")
+                            s.sendall(bytes(json.dumps(self.ready_queue.get()), 'utf-8'))
+                            print('end of socket use')
+            print('end of allocation')
+
+    def schedule(self):
+        print("scheduling")
+        done_map_jobs = []
+        while True:
+            print('done_map_jobs', done_map_jobs)
+            print('iterating')
+            reducers_to_be_run = []
+            time.sleep(2)
+            with self.map_tasks_lock:
+                print('got map_task lock')
+
+                for i in self.map_tasks:
+                    for map_task in self.map_tasks[i]:
+                        if map_task['status'] == 0:
+                            map_task['status'] = 1
+                            self.ready_queue.put(map_task)
+                            break
+
+                    ct = 0
+                    for map_task in self.map_tasks[i]:
+                        if map_task['status'] == 2:
+                            ct += 1
+                        if ct == len(self.map_tasks[i]) and  i not in done_map_jobs:
+                            done_map_jobs.append(i)
+                            reducers_to_be_run.append(i)
+
+                print('map tasks', self.map_tasks)
+
+            with self.reduce_tasks_lock:
+                print('got reduce lock')
+                for i in reducers_to_be_run:
+                    for reduce_task in self.reduce_tasks[i]:
+                        print('REDUCE TASK TO RUN', reduce_task)
+                        self.ready_queue.put(reduce_task)
+                print('reduce tasks', self.reduce_tasks)
+
+            if not self.ready_queue.empty():
+                self.allocate_tasks()
+
+            print('scheduler gave up on locks')
 
 
     def listen_for_worker_updates(self):
@@ -127,8 +144,20 @@ class Scheduler():
             while True:
                 worker_socket, address = s.accept()
                 #print(f"Connection from {address} to port 5001(worker)  has been established.")
-                msg = worker_socket.recv(1024).decode("utf-8")
-                #print(msg)
+                msg = json.loads(worker_socket.recv(1024).decode("utf-8"))
+                print('WORKER SENT', msg)
+                with self.map_tasks_lock:
+                    print(msg['task_id'])
+                    for i in  self.map_tasks[msg['task_id'][0]]:
+                        if i['task_id'] == msg['task_id']:
+                            print(i['task_id'], msg['task_id'])
+                            i['status'] = 2
+                with self.reduce_tasks_lock:
+                    for i in self.reduce_tasks[msg['task_id'][0]]:
+                        if i['task_id'] == msg['task_id']:
+                            i['status'] = 2
+                    print('REDUCE TASKS',self.reduce_tasks)
+
 
 
 
