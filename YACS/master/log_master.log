@@ -1,0 +1,36 @@
+2020-12-02 12:36:26,641 %MASTER RECEIVED JOB%{"job_id": "0", "map_tasks": [{"task_id": "0_M0", "duration": 3}, {"task_id": "0_M1", "duration": 3}, {"task_id": "0_M2", "duration": 3}], "reduce_tasks": [{"task_id": "0_R0", "duration": 3}]}
+2020-12-02 12:36:26,687 %MASTER RECEIVED JOB%{"job_id": "1", "map_tasks": [{"task_id": "1_M0", "duration": 2}, {"task_id": "1_M1", "duration": 3}, {"task_id": "1_M2", "duration": 3}, {"task_id": "1_M3", "duration": 3}], "reduce_tasks": [{"task_id": "1_R0", "duration": 1}]}
+2020-12-02 12:36:26,784 %SENDING WORKER WITH ID 1 and slots 4 the task%{"task_id": "0_M0", "duration": 3, "status": 1}
+2020-12-02 12:36:26,785 %SENDING WORKER WITH ID 2 and slots 6 the task%{"task_id": "1_M0", "duration": 2, "status": 1}
+2020-12-02 12:36:27,286 %SENDING WORKER WITH ID 1 and slots 3 the task%{"task_id": "0_M1", "duration": 3, "status": 1}
+2020-12-02 12:36:27,287 %SENDING WORKER WITH ID 2 and slots 5 the task%{"task_id": "1_M1", "duration": 3, "status": 1}
+2020-12-02 12:36:27,792 %SENDING WORKER WITH ID 1 and slots 2 the task%{"task_id": "0_M2", "duration": 3, "status": 1}
+2020-12-02 12:36:27,793 %SENDING WORKER WITH ID 2 and slots 4 the task%{"task_id": "1_M2", "duration": 3, "status": 1}
+2020-12-02 12:36:28,298 %SENDING WORKER WITH ID 1 and slots 1 the task%{"task_id": "1_M3", "duration": 3, "status": 1}
+2020-12-02 12:36:28,617 %WORKER SENT%{'task_id': '1_M0', 'duration': 0, 'status': 2, 'worker_id': 2}
+2020-12-02 12:36:29,197 %WORKER SENT%{'task_id': '0_M0', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:29,348 %MASTER RECEIVED JOB%{"job_id": "2", "map_tasks": [{"task_id": "2_M0", "duration": 3}, {"task_id": "2_M1", "duration": 2}, {"task_id": "2_M2", "duration": 3}], "reduce_tasks": [{"task_id": "2_R0", "duration": 1}]}
+2020-12-02 12:36:29,638 %WORKER SENT%{'task_id': '1_M1', 'duration': 0, 'status': 2, 'worker_id': 2}
+2020-12-02 12:36:29,803 %SENDING WORKER WITH ID 1 and slots 1 the task%{"task_id": "2_M0", "duration": 3, "status": 1}
+2020-12-02 12:36:30,220 %WORKER SENT%{'task_id': '0_M1', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:30,221 %WORKER SENT%{'task_id': '0_M2', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:30,305 %SENDING WORKER WITH ID 1 and slots 2 the task%{"task_id": "2_M1", "duration": 2, "status": 1}
+2020-12-02 12:36:30,306 %SENDING WORKER WITH ID 2 and slots 5 the task%{"task_id": "0_R0", "duration": 3, "status": 0}
+2020-12-02 12:36:30,451 %MASTER RECEIVED JOB%{"job_id": "3", "map_tasks": [{"task_id": "3_M0", "duration": 2}], "reduce_tasks": [{"task_id": "3_R0", "duration": 4}, {"task_id": "3_R1", "duration": 4}]}
+2020-12-02 12:36:30,661 %WORKER SENT%{'task_id': '1_M2', 'duration': 0, 'status': 2, 'worker_id': 2}
+2020-12-02 12:36:30,807 %SENDING WORKER WITH ID 1 and slots 1 the task%{"task_id": "2_M2", "duration": 3, "status": 1}
+2020-12-02 12:36:30,808 %SENDING WORKER WITH ID 2 and slots 5 the task%{"task_id": "3_M0", "duration": 2, "status": 1}
+2020-12-02 12:36:31,247 %WORKER SENT%{'task_id': '1_M3', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:31,309 %SENDING WORKER WITH ID 1 and slots 1 the task%{"task_id": "1_R0", "duration": 1, "status": 0}
+2020-12-02 12:36:32,274 %WORKER SENT%{'task_id': '2_M0', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:32,275 %WORKER SENT%{'task_id': '2_M1', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:32,275 %WORKER SENT%{'task_id': '1_R0', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:32,709 %WORKER SENT%{'task_id': '0_R0', 'duration': 0, 'status': 2, 'worker_id': 2}
+2020-12-02 12:36:32,717 %WORKER SENT%{'task_id': '3_M0', 'duration': 0, 'status': 2, 'worker_id': 2}
+2020-12-02 12:36:32,813 %SENDING WORKER WITH ID 1 and slots 3 the task%{"task_id": "3_R0", "duration": 4, "status": 0}
+2020-12-02 12:36:32,813 %SENDING WORKER WITH ID 2 and slots 6 the task%{"task_id": "3_R1", "duration": 4, "status": 0}
+2020-12-02 12:36:33,310 %WORKER SENT%{'task_id': '2_M2', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:33,315 %SENDING WORKER WITH ID 1 and slots 3 the task%{"task_id": "2_R0", "duration": 1, "status": 0}
+2020-12-02 12:36:34,345 %WORKER SENT%{'task_id': '2_R0', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:36,401 %WORKER SENT%{'task_id': '3_R0', 'duration': 0, 'status': 2, 'worker_id': 1}
+2020-12-02 12:36:36,844 %WORKER SENT%{'task_id': '3_R1', 'duration': 0, 'status': 2, 'worker_id': 2}

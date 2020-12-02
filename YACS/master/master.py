@@ -2,24 +2,25 @@ import threading
 import socket
 import sys
 import logging
+import random
 import json
 import time
 from queue import Queue
 
-logging.basicConfig(filename="newfile.log",
+logging.basicConfig(filename="log_master.log",
                     format='%(asctime)s %(message)s',
                     filemode='w',
                     level=logging.DEBUG
                     )
 logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger()
-
-lock = threading.Lock()
 
 class Scheduler():
-    def __init__(self, config):
+    def __init__(self, config, policy):
         self.config = config
+        self.policy = policy
         self.number_of_workers = len(config)
+
+        self.logger = logging.getLogger()
 
         self.map_tasks_lock = threading.Lock()
         self.reduce_tasks_lock = threading.Lock()
@@ -62,7 +63,6 @@ class Scheduler():
 
 
     def listen_for_jobs(self):
-        print('listening')
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(('localhost', 5000))
@@ -72,7 +72,7 @@ class Scheduler():
                 request_socket, address = s.accept()
                 print(f"Connection from {address} to 5000(requests) has been established.")
                 msg = request_socket.recv(1024).decode("utf-8")
-                print(f"MASTER RECEIVED JOB:{msg}")
+                logging.info(f"%MASTER RECEIVED JOB%{msg}")
                 self.parse_request(msg)
 
 
@@ -80,30 +80,63 @@ class Scheduler():
     def allocate_tasks(self):
         print('allocating')
         print('not empty', self.ready_queue.queue)
-        for i in self.slots:
-            if not self.ready_queue.empty():
-                    if self.slots[i]['slots'] != 0:
-                        #self.slots[i]['slots'] -= 1
+        with self.slots_lock:
+            if self.policy == 'RR':
+                for i in self.slots:
+                    if not self.ready_queue.empty():
+                            if self.slots[i]['slots'] != 0:
+                                self.slots[i]['slots'] -= 1
+                                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                                    print('using sockets')
+                                    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                                    s.connect(('localhost', self.slots[i]['port']))
+                                    msg = json.dumps(self.ready_queue.get())
+                                    logging.info(f"%SENDING WORKER WITH ID {i} and slots {self.slots[i]['slots']} the task%{msg}")
+                                    s.sendall(bytes(msg, 'utf-8'))
+
+            elif self.policy == 'RD':
+                print('KEYS',list(self.slots.keys()))
+                k = random.choice(list(self.slots.keys()))
+                if not self.ready_queue.empty():
+                    if self.slots[k]['slots'] != 0:
+                        self.slots[k]['slots'] -= 1
                         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                             print('using sockets')
                             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                            s.connect(('localhost', 4001))
-                            #print(f"SENDING WORKER the job {msg}")
-                            s.sendall(bytes(json.dumps(self.ready_queue.get()), 'utf-8'))
-                            print('end of socket use')
+                            s.connect(('localhost', self.slots[k]['port']))
+                            msg = json.dumps(self.ready_queue.get())
+                            logging.info(f"%SENDING WORKER WITH ID {k} and slots {self.slots[k]['slots']} the task%{msg}")
+                            s.sendall(bytes(msg, 'utf-8'))
+
+            else:
+                max_slots_free = 0
+                worker = 0
+                for i in self.slots:
+                    if self.slots[i]['slots'] > max_slots_free:
+                        max_slots_free = self.slots[i]['slots']
+                        worker = i
+                if max_slots_free > 0:
+                    if self.slots[worker]['slots'] != 0:
+                        self.slots[worker]['slots'] -= 1
+                        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                            print('using sockets')
+                            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                            s.connect(('localhost', self.slots[worker]['port']))
+                            msg = json.dumps(self.ready_queue.get())
+                            logging.info(f"%SENDING WORKER WITH ID {worker} and slots {self.slots[worker]['slots']} the task%{msg}")
+                            s.sendall(bytes(msg, 'utf-8'))
+
+
             print('end of allocation')
 
     def schedule(self):
-        print("scheduling")
         done_map_jobs = []
         while True:
+            time.sleep(0.5)
             print('done_map_jobs', done_map_jobs)
             print('iterating')
             reducers_to_be_run = []
-            time.sleep(2)
             with self.map_tasks_lock:
-                print('got map_task lock')
-
                 for i in self.map_tasks:
                     for map_task in self.map_tasks[i]:
                         if map_task['status'] == 0:
@@ -122,21 +155,25 @@ class Scheduler():
                 print('map tasks', self.map_tasks)
 
             with self.reduce_tasks_lock:
-                print('got reduce lock')
                 for i in reducers_to_be_run:
                     for reduce_task in self.reduce_tasks[i]:
                         print('REDUCE TASK TO RUN', reduce_task)
                         self.ready_queue.put(reduce_task)
                 print('reduce tasks', self.reduce_tasks)
 
-            if not self.ready_queue.empty():
+            empty_slots = 0
+            with self.slots_lock:
+                for i in self.slots:
+                    empty_slots += self.slots[i]['slots']
+
+            if not self.ready_queue.empty() and empty_slots != 0:
                 self.allocate_tasks()
 
-            print('scheduler gave up on locks')
+            if empty_slots == 0:
+                time.sleep(1)
 
 
     def listen_for_worker_updates(self):
-        print('worker')
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(('localhost', 5001))
@@ -145,7 +182,7 @@ class Scheduler():
                 worker_socket, address = s.accept()
                 #print(f"Connection from {address} to port 5001(worker)  has been established.")
                 msg = json.loads(worker_socket.recv(1024).decode("utf-8"))
-                print('WORKER SENT', msg)
+                logging.info(f'%WORKER SENT%{msg}')
                 with self.map_tasks_lock:
                     print(msg['task_id'])
                     for i in  self.map_tasks[msg['task_id'][0]]:
@@ -156,16 +193,17 @@ class Scheduler():
                     for i in self.reduce_tasks[msg['task_id'][0]]:
                         if i['task_id'] == msg['task_id']:
                             i['status'] = 2
-                    print('REDUCE TASKS',self.reduce_tasks)
 
-
+                with self.slots_lock:
+                    self.slots[msg['worker_id']]['slots'] += 1
+                    print(msg)
 
 
 def main():
     with open(sys.argv[1]) as f:
         config = json.load(f)
     print(config['workers'])
-    sched = Scheduler(config['workers'])
+    sched = Scheduler(config['workers'], sys.argv[2])
 
 if __name__ == "__main__":
     main()
