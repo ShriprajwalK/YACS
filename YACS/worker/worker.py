@@ -7,7 +7,7 @@ import time
 from queue import Queue
 
 
-logging.basicConfig(filename=f"log_worker_{sys.argv[2]}.log",
+logging.basicConfig(filename=f"log_worker_{sys.argv[2]}_LL.log",
                     format='%(asctime)s %(message)s',
                     filemode='w',
                     level=logging.DEBUG
@@ -50,29 +50,30 @@ class Worker:
                 master, address = s.accept()
                 msg = master.recv(1024).decode("utf-8")
                 with self.execution_pool_lock:
-                    logging.info(f'TASK RECEIVED {msg}')
+                    logging.info(f'%TASK RECEIVED%{msg}')
                     self.tasks_received += 1
                     self.execution_pool.append(json.loads(str(msg)))
-                    print('pool', self.execution_pool)
-                print('done listening')
+                    #print('pool', self.execution_pool)
+                #print('done listening')
 
 
     def execute_tasks(self):
         while True:
             to_remove = []
-            print('executing')
+            #print('executing')
             with self.execution_pool_lock:
-                print('have execution locks')
+                #print('have execution locks')
                 for i in self.execution_pool:
                     i['duration'] -= 1
                     if i['duration'] == 0:
                         self.tasks_completed += 1
                         i['status'] = 2
+                        logging.info(f'%TASK COMPLETED%{i}')
                         to_remove.append(i)
                         with self.completed_queue_lock:
                             self.completed_queue.put(i)
-                    print('In execution')
-                    print(i, type(i))
+                    #print('In execution')
+                    #print(i, type(i))
                 for i in to_remove:
                     self.execution_pool.remove(i)
                 self.tasks_running = len(self.execution_pool)
@@ -86,7 +87,7 @@ class Worker:
             with self.completed_queue_lock:
                 if not self.completed_queue.empty():
                     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        print('sending task updates to port 5001')
+                        #print('sending task updates to port 5001')
                         s.connect(('localhost', 5001))
                         to_send = self.completed_queue.get()
                         to_send['worker_id'] = self.worker_id
