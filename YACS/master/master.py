@@ -206,7 +206,7 @@ class Scheduler():
                         if ct == len(self.reduce_tasks[job_id]):
                             logging.info(f'%JOB FINISHED WITH ID:%{job_id}% and reduce tasks {ct}')
                             done_jobs.append(job_id)
-                            if len(done_jobs) == 100:
+                            if len(done_jobs) == 20:
                                 print('done')
                             #print(done_jobs)
 

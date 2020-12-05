@@ -7,7 +7,7 @@ import time
 from queue import Queue
 
 
-logging.basicConfig(filename=f"log_worker_{sys.argv[2]}_LL.log",
+logging.basicConfig(filename=f"log_worker_{sys.argv[2]}_RR.log",
                     format='%(asctime)s %(message)s',
                     filemode='w',
                     level=logging.DEBUG
@@ -22,9 +22,10 @@ class Worker:
         self.logger = logging.getLogger()
 
         self.execution_pool = []
+        self.arrival_list = []
         self.completed_queue = Queue()
+        self.arrival_list_lock = threading.Lock()
         self.completed_queue_lock = threading.Lock()
-        self.execution_pool_lock = threading.Lock()
         self.tasks_received = 0
         self.tasks_completed = 0
         self.tasks_running = 0
@@ -49,10 +50,10 @@ class Worker:
             while True:
                 master, address = s.accept()
                 msg = master.recv(1024).decode("utf-8")
-                with self.execution_pool_lock:
+                with self.arrival_list_lock:
                     logging.info(f'%TASK RECEIVED%{msg}')
                     self.tasks_received += 1
-                    self.execution_pool.append(json.loads(str(msg)))
+                    self.arrival_list.append(json.loads(str(msg)))
                     #print('pool', self.execution_pool)
                 #print('done listening')
 
@@ -61,24 +62,28 @@ class Worker:
         while True:
             to_remove = []
             #print('executing')
-            with self.execution_pool_lock:
-                #print('have execution locks')
-                for i in self.execution_pool:
-                    i['duration'] -= 1
-                    if i['duration'] == 0:
-                        self.tasks_completed += 1
-                        i['status'] = 2
-                        logging.info(f'%TASK COMPLETED%{i}')
-                        to_remove.append(i)
-                        with self.completed_queue_lock:
-                            self.completed_queue.put(i)
-                    #print('In execution')
-                    #print(i, type(i))
-                for i in to_remove:
-                    self.execution_pool.remove(i)
-                self.tasks_running = len(self.execution_pool)
-            logging.info(f'%number of tasks running=% {self.tasks_running} %tasks completed=%{self.tasks_completed}')
+            with self.arrival_list_lock:
+                self.execution_pool.extend(self.arrival_list)
+                self.arrival_list = []
+
             time.sleep(1)
+            #with self.execution_pool_lock:
+            #print('have execution locks')
+            for i in self.execution_pool:
+                i['duration'] -= 1
+                if i['duration'] == 0:
+                    self.tasks_completed += 1
+                    i['status'] = 2
+                    logging.info(f'%TASK COMPLETED%{i}')
+                    to_remove.append(i)
+                    with self.completed_queue_lock:
+                        self.completed_queue.put(i)
+                #print('In execution')
+                #print(i, type(i))
+            for i in to_remove:
+                self.execution_pool.remove(i)
+            self.tasks_running = len(self.execution_pool)
+            logging.info(f'%number of tasks running=% {self.tasks_running} %tasks completed=%{self.tasks_completed}')
 
 
     def send_task_updates(self):
