@@ -1,90 +1,73 @@
-2020-12-05 11:40:06,945 %number of tasks running=% 0 %tasks completed=%0
-2020-12-05 11:40:07,971 %number of tasks running=% 0 %tasks completed=%0
-2020-12-05 11:40:08,635 %TASK RECEIVED%{"task_id": "0_M0", "duration": 3, "status": 1}
-2020-12-05 11:40:08,984 %number of tasks running=% 1 %tasks completed=%0
-2020-12-05 11:40:09,998 %number of tasks running=% 1 %tasks completed=%0
-2020-12-05 11:40:10,803 %TASK RECEIVED%{"task_id": "2_M1", "duration": 2, "status": 1}
-2020-12-05 11:40:10,907 %TASK RECEIVED%{"task_id": "2_M2", "duration": 2, "status": 1}
-2020-12-05 11:40:11,014 %TASK COMPLETED%{'task_id': '0_M0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:11,015 %number of tasks running=% 2 %tasks completed=%1
-2020-12-05 11:40:11,015 %MESSAGE TO MASTER b'{"task_id": "0_M0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:11,220 %TASK RECEIVED%{"task_id": "3_R0", "duration": 3, "status": 0}
-2020-12-05 11:40:12,024 %TASK COMPLETED%{'task_id': '2_M1', 'duration': 0, 'status': 2}
-2020-12-05 11:40:12,036 %TASK COMPLETED%{'task_id': '2_M2', 'duration': 0, 'status': 2}
-2020-12-05 11:40:12,037 %MESSAGE TO MASTER b'{"task_id": "2_M1", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:12,037 %number of tasks running=% 1 %tasks completed=%3
-2020-12-05 11:40:12,038 %MESSAGE TO MASTER b'{"task_id": "2_M2", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:12,248 %TASK RECEIVED%{"task_id": "0_R0", "duration": 1, "status": 0}
-2020-12-05 11:40:13,047 %TASK COMPLETED%{'task_id': '0_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:13,065 %number of tasks running=% 1 %tasks completed=%4
-2020-12-05 11:40:13,066 %MESSAGE TO MASTER b'{"task_id": "0_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:14,076 %TASK COMPLETED%{'task_id': '3_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:14,081 %number of tasks running=% 0 %tasks completed=%5
-2020-12-05 11:40:14,082 %MESSAGE TO MASTER b'{"task_id": "3_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:15,092 %number of tasks running=% 0 %tasks completed=%5
-2020-12-05 11:40:15,322 %TASK RECEIVED%{"task_id": "4_R0", "duration": 4, "status": 0}
-2020-12-05 11:40:15,347 %TASK RECEIVED%{"task_id": "4_R1", "duration": 4, "status": 0}
-2020-12-05 11:40:16,106 %number of tasks running=% 2 %tasks completed=%5
-2020-12-05 11:40:16,358 %TASK RECEIVED%{"task_id": "5_R0", "duration": 2, "status": 0}
-2020-12-05 11:40:17,118 %number of tasks running=% 3 %tasks completed=%5
-2020-12-05 11:40:18,134 %TASK COMPLETED%{'task_id': '5_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:18,146 %number of tasks running=% 2 %tasks completed=%6
-2020-12-05 11:40:18,147 %MESSAGE TO MASTER b'{"task_id": "5_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:18,294 %TASK RECEIVED%{"task_id": "11_M2", "duration": 1, "status": 1}
-2020-12-05 11:40:19,157 %TASK COMPLETED%{'task_id': '4_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:19,175 %TASK COMPLETED%{'task_id': '4_R1', 'duration': 0, 'status': 2}
-2020-12-05 11:40:19,175 %MESSAGE TO MASTER b'{"task_id": "4_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:19,176 %TASK COMPLETED%{'task_id': '11_M2', 'duration': 0, 'status': 2}
-2020-12-05 11:40:19,176 %MESSAGE TO MASTER b'{"task_id": "4_R1", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:19,195 %number of tasks running=% 0 %tasks completed=%9
-2020-12-05 11:40:19,196 %MESSAGE TO MASTER b'{"task_id": "11_M2", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:19,306 %TASK RECEIVED%{"task_id": "12_M0", "duration": 3, "status": 1}
-2020-12-05 11:40:19,330 %TASK RECEIVED%{"task_id": "14_M1", "duration": 1, "status": 1}
-2020-12-05 11:40:19,354 %TASK RECEIVED%{"task_id": "14_M2", "duration": 3, "status": 1}
-2020-12-05 11:40:20,203 %TASK COMPLETED%{'task_id': '14_M1', 'duration': 0, 'status': 2}
-2020-12-05 11:40:20,221 %number of tasks running=% 2 %tasks completed=%10
-2020-12-05 11:40:20,221 %MESSAGE TO MASTER b'{"task_id": "14_M1", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:20,418 %TASK RECEIVED%{"task_id": "10_R1", "duration": 3, "status": 0}
-2020-12-05 11:40:21,231 %number of tasks running=% 3 %tasks completed=%10
-2020-12-05 11:40:22,244 %TASK COMPLETED%{'task_id': '12_M0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:22,250 %TASK COMPLETED%{'task_id': '14_M2', 'duration': 0, 'status': 2}
-2020-12-05 11:40:22,250 %number of tasks running=% 1 %tasks completed=%12
-2020-12-05 11:40:22,251 %MESSAGE TO MASTER b'{"task_id": "12_M0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:22,252 %MESSAGE TO MASTER b'{"task_id": "14_M2", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:22,633 %TASK RECEIVED%{"task_id": "17_M2", "duration": 1, "status": 1}
-2020-12-05 11:40:22,658 %TASK RECEIVED%{"task_id": "18_M0", "duration": 3, "status": 1}
-2020-12-05 11:40:23,257 %TASK COMPLETED%{'task_id': '10_R1', 'duration': 0, 'status': 2}
-2020-12-05 11:40:23,257 %TASK COMPLETED%{'task_id': '17_M2', 'duration': 0, 'status': 2}
-2020-12-05 11:40:23,258 %MESSAGE TO MASTER b'{"task_id": "10_R1", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:23,276 %number of tasks running=% 1 %tasks completed=%14
-2020-12-05 11:40:23,277 %MESSAGE TO MASTER b'{"task_id": "17_M2", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:23,642 %TASK RECEIVED%{"task_id": "14_R1", "duration": 3, "status": 0}
-2020-12-05 11:40:23,659 %TASK RECEIVED%{"task_id": "18_M1", "duration": 4, "status": 1}
-2020-12-05 11:40:24,282 %number of tasks running=% 3 %tasks completed=%14
-2020-12-05 11:40:25,300 %TASK COMPLETED%{'task_id': '18_M0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:25,305 %number of tasks running=% 2 %tasks completed=%15
-2020-12-05 11:40:25,306 %MESSAGE TO MASTER b'{"task_id": "18_M0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:26,313 %TASK COMPLETED%{'task_id': '14_R1', 'duration': 0, 'status': 2}
-2020-12-05 11:40:26,319 %number of tasks running=% 1 %tasks completed=%16
-2020-12-05 11:40:26,320 %MESSAGE TO MASTER b'{"task_id": "14_R1", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:26,710 %TASK RECEIVED%{"task_id": "16_R0", "duration": 3, "status": 0}
-2020-12-05 11:40:26,729 %TASK RECEIVED%{"task_id": "19_R0", "duration": 1, "status": 0}
-2020-12-05 11:40:27,331 %TASK COMPLETED%{'task_id': '18_M1', 'duration': 0, 'status': 2}
-2020-12-05 11:40:27,331 %TASK COMPLETED%{'task_id': '19_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:27,332 %MESSAGE TO MASTER b'{"task_id": "18_M1", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:27,337 %number of tasks running=% 1 %tasks completed=%18
-2020-12-05 11:40:27,338 %MESSAGE TO MASTER b'{"task_id": "19_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:27,443 %TASK RECEIVED%{"task_id": "18_R0", "duration": 3, "status": 0}
-2020-12-05 11:40:28,346 %number of tasks running=% 2 %tasks completed=%18
-2020-12-05 11:40:29,364 %TASK COMPLETED%{'task_id': '16_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:29,370 %number of tasks running=% 1 %tasks completed=%19
-2020-12-05 11:40:29,371 %MESSAGE TO MASTER b'{"task_id": "16_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:30,378 %TASK COMPLETED%{'task_id': '18_R0', 'duration': 0, 'status': 2}
-2020-12-05 11:40:30,409 %number of tasks running=% 0 %tasks completed=%20
-2020-12-05 11:40:30,410 %MESSAGE TO MASTER b'{"task_id": "18_R0", "duration": 0, "status": 2, "worker_id": 3}'
-2020-12-05 11:40:31,415 %number of tasks running=% 0 %tasks completed=%20
-2020-12-05 11:40:32,432 %number of tasks running=% 0 %tasks completed=%20
-2020-12-05 11:40:33,443 %number of tasks running=% 0 %tasks completed=%20
-2020-12-05 11:40:34,459 %number of tasks running=% 0 %tasks completed=%20
-2020-12-05 11:40:35,475 %number of tasks running=% 0 %tasks completed=%20
-2020-12-05 11:40:36,492 %number of tasks running=% 0 %tasks completed=%20
+2020-12-06 22:35:50,272 %number of tasks running=% 0 %tasks completed=%0
+2020-12-06 22:35:51,285 %number of tasks running=% 0 %tasks completed=%0
+2020-12-06 22:35:52,297 %number of tasks running=% 0 %tasks completed=%0
+2020-12-06 22:35:53,309 %number of tasks running=% 0 %tasks completed=%0
+2020-12-06 22:35:53,591 %TASK RECEIVED%{"task_id": "2_M0", "duration": 4, "status": 1}
+2020-12-06 22:35:54,326 %number of tasks running=% 0 %tasks completed=%0
+2020-12-06 22:35:55,341 %number of tasks running=% 1 %tasks completed=%0
+2020-12-06 22:35:55,566 %TASK RECEIVED%{"task_id": "1_R0", "duration": 2, "status": 0}
+2020-12-06 22:35:56,358 %number of tasks running=% 1 %tasks completed=%0
+2020-12-06 22:35:56,588 %TASK RECEIVED%{"task_id": "0_R0", "duration": 1, "status": 0}
+2020-12-06 22:35:57,371 %number of tasks running=% 2 %tasks completed=%0
+2020-12-06 22:35:58,388 %TASK COMPLETED%{'task_id': '2_M0', 'duration': 0, 'status': 2}
+2020-12-06 22:35:58,394 %TASK COMPLETED%{'task_id': '1_R0', 'duration': 0, 'status': 2}
+2020-12-06 22:35:58,395 %MESSAGE TO MASTER b'{"task_id": "2_M0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:35:58,395 %TASK COMPLETED%{'task_id': '0_R0', 'duration': 0, 'status': 2}
+2020-12-06 22:35:58,395 %MESSAGE TO MASTER b'{"task_id": "1_R0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:35:58,396 %number of tasks running=% 0 %tasks completed=%3
+2020-12-06 22:35:58,396 %MESSAGE TO MASTER b'{"task_id": "0_R0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:35:59,356 %TASK RECEIVED%{"task_id": "7_M2", "duration": 1, "status": 1}
+2020-12-06 22:35:59,403 %number of tasks running=% 0 %tasks completed=%3
+2020-12-06 22:35:59,666 %TASK RECEIVED%{"task_id": "8_M1", "duration": 3, "status": 1}
+2020-12-06 22:35:59,692 %TASK RECEIVED%{"task_id": "9_M0", "duration": 4, "status": 1}
+2020-12-06 22:36:00,421 %TASK COMPLETED%{'task_id': '7_M2', 'duration': 0, 'status': 2}
+2020-12-06 22:36:00,428 %number of tasks running=% 0 %tasks completed=%4
+2020-12-06 22:36:00,428 %MESSAGE TO MASTER b'{"task_id": "7_M2", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:01,286 %TASK RECEIVED%{"task_id": "11_M0", "duration": 1, "status": 1}
+2020-12-06 22:36:01,437 %number of tasks running=% 2 %tasks completed=%4
+2020-12-06 22:36:02,453 %TASK COMPLETED%{'task_id': '11_M0', 'duration': 0, 'status': 2}
+2020-12-06 22:36:02,465 %number of tasks running=% 2 %tasks completed=%5
+2020-12-06 22:36:02,465 %MESSAGE TO MASTER b'{"task_id": "11_M0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:03,287 %TASK RECEIVED%{"task_id": "11_M3", "duration": 4, "status": 1}
+2020-12-06 22:36:03,475 %TASK COMPLETED%{'task_id': '8_M1', 'duration': 0, 'status': 2}
+2020-12-06 22:36:03,488 %number of tasks running=% 1 %tasks completed=%6
+2020-12-06 22:36:03,488 %MESSAGE TO MASTER b'{"task_id": "8_M1", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:04,298 %TASK RECEIVED%{"task_id": "7_R0", "duration": 3, "status": 0}
+2020-12-06 22:36:04,494 %TASK COMPLETED%{'task_id': '9_M0', 'duration': 0, 'status': 2}
+2020-12-06 22:36:04,513 %number of tasks running=% 1 %tasks completed=%7
+2020-12-06 22:36:04,514 %MESSAGE TO MASTER b'{"task_id": "9_M0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:05,300 %TASK RECEIVED%{"task_id": "16_M0", "duration": 2, "status": 1}
+2020-12-06 22:36:05,520 %number of tasks running=% 2 %tasks completed=%7
+2020-12-06 22:36:06,538 %number of tasks running=% 3 %tasks completed=%7
+2020-12-06 22:36:07,550 %TASK COMPLETED%{'task_id': '11_M3', 'duration': 0, 'status': 2}
+2020-12-06 22:36:07,580 %TASK COMPLETED%{'task_id': '7_R0', 'duration': 0, 'status': 2}
+2020-12-06 22:36:07,580 %MESSAGE TO MASTER b'{"task_id": "11_M3", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:07,587 %TASK COMPLETED%{'task_id': '16_M0', 'duration': 0, 'status': 2}
+2020-12-06 22:36:07,587 %number of tasks running=% 0 %tasks completed=%10
+2020-12-06 22:36:07,588 %MESSAGE TO MASTER b'{"task_id": "7_R0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:07,588 %MESSAGE TO MASTER b'{"task_id": "16_M0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:08,310 %TASK RECEIVED%{"task_id": "9_R1", "duration": 3, "status": 0}
+2020-12-06 22:36:08,322 %TASK RECEIVED%{"task_id": "18_M1", "duration": 4, "status": 1}
+2020-12-06 22:36:08,341 %TASK RECEIVED%{"task_id": "19_M0", "duration": 4, "status": 1}
+2020-12-06 22:36:08,598 %number of tasks running=% 0 %tasks completed=%10
+2020-12-06 22:36:09,610 %number of tasks running=% 3 %tasks completed=%10
+2020-12-06 22:36:10,626 %number of tasks running=% 3 %tasks completed=%10
+2020-12-06 22:36:11,637 %TASK COMPLETED%{'task_id': '9_R1', 'duration': 0, 'status': 2}
+2020-12-06 22:36:11,643 %number of tasks running=% 2 %tasks completed=%11
+2020-12-06 22:36:11,644 %MESSAGE TO MASTER b'{"task_id": "9_R1", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:12,650 %TASK COMPLETED%{'task_id': '18_M1', 'duration': 0, 'status': 2}
+2020-12-06 22:36:12,668 %TASK COMPLETED%{'task_id': '19_M0', 'duration': 0, 'status': 2}
+2020-12-06 22:36:12,669 %MESSAGE TO MASTER b'{"task_id": "18_M1", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:12,669 %number of tasks running=% 0 %tasks completed=%13
+2020-12-06 22:36:12,670 %MESSAGE TO MASTER b'{"task_id": "19_M0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:12,746 %TASK RECEIVED%{"task_id": "19_R0", "duration": 1, "status": 0}
+2020-12-06 22:36:13,680 %number of tasks running=% 0 %tasks completed=%13
+2020-12-06 22:36:14,698 %TASK COMPLETED%{'task_id': '19_R0', 'duration': 0, 'status': 2}
+2020-12-06 22:36:14,729 %number of tasks running=% 0 %tasks completed=%14
+2020-12-06 22:36:14,730 %MESSAGE TO MASTER b'{"task_id": "19_R0", "duration": 0, "status": 2, "worker_id": 3}'
+2020-12-06 22:36:15,741 %number of tasks running=% 0 %tasks completed=%14
+2020-12-06 22:36:16,758 %number of tasks running=% 0 %tasks completed=%14
+2020-12-06 22:36:17,775 %number of tasks running=% 0 %tasks completed=%14
+2020-12-06 22:36:18,789 %number of tasks running=% 0 %tasks completed=%14
+2020-12-06 22:36:19,806 %number of tasks running=% 0 %tasks completed=%14
+2020-12-06 22:36:20,820 %number of tasks running=% 0 %tasks completed=%14
