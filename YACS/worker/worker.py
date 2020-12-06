@@ -1,3 +1,10 @@
+"""
+This file contains the source code for the worker of the YACS scheduler.
+It takes the port and the worker id as arguments.
+It then listens to task launch requests, executes tasks and sends task updates
+to the master.
+"""
+
 import threading
 import socket
 import logging
@@ -7,6 +14,7 @@ import time
 from queue import Queue
 
 
+#Initialising logging with the required format.
 logging.basicConfig(filename=f"log_worker_{sys.argv[2]}_RR.log",
                     format='%(asctime)s %(message)s',
                     filemode='w',
@@ -16,6 +24,12 @@ logging.basicConfig(level=logging.DEBUG)
 
 
 class Worker:
+    """
+    This class is the worker of the YACS scheduler. It takes the worker id and
+    the port it opeates on as input and launches 3 threads: one for listening
+    to task launches, one for executing tasks, and one more to send task updates
+    to master.
+    """
     def __init__(self, worker_id, port):
         self.worker_id = worker_id
         self.port  = port
@@ -43,6 +57,7 @@ class Worker:
 
 
     def listen_for_task_launch(self, port, worker_id):
+        "This function listens for task launches form the master"
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             s.bind(('localhost', port))
@@ -54,21 +69,17 @@ class Worker:
                     logging.info(f'%TASK RECEIVED%{msg}')
                     self.tasks_received += 1
                     self.arrival_list.append(json.loads(str(msg)))
-                    #print('pool', self.execution_pool)
-                #print('done listening')
 
 
     def execute_tasks(self):
+        "This function deducts one from the duration of all tasks in the execution pool"
         while True:
             to_remove = []
-            #print('executing')
             with self.arrival_list_lock:
                 self.execution_pool.extend(self.arrival_list)
                 self.arrival_list = []
 
             time.sleep(1)
-            #with self.execution_pool_lock:
-            #print('have execution locks')
             for i in self.execution_pool:
                 i['duration'] -= 1
                 if i['duration'] == 0:
@@ -78,8 +89,6 @@ class Worker:
                     to_remove.append(i)
                     with self.completed_queue_lock:
                         self.completed_queue.put(i)
-                #print('In execution')
-                #print(i, type(i))
             for i in to_remove:
                 self.execution_pool.remove(i)
             self.tasks_running = len(self.execution_pool)
@@ -92,7 +101,6 @@ class Worker:
             with self.completed_queue_lock:
                 if not self.completed_queue.empty():
                     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        #print('sending task updates to port 5001')
                         s.connect(('localhost', 5001))
                         to_send = self.completed_queue.get()
                         to_send['worker_id'] = self.worker_id
